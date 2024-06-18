@@ -39,18 +39,13 @@ class AgentState(TypedDict):
 class GraphModel:
     def __init__(self):
         self.members = ["Searcher", "Retriever"]
-        self.llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model="gpt-4-1106-preview", temperature=0)
-        self.system_prompt = """You are an efficient supervisor tasked with managing a conversion between
-            the following workers: {members}. Given the following user request, you
-            should precisely determine which worker will act next. Each worker will
-            skillfully perform a task and respond with thorough explanations of results
-            and status. When finished, respond with FINISH. Use Searcher if user asks for a specific 
-            document content. Use Retriever otherwise."""
-        self.retriever_prompt = """Identify and retrieve only documents relevant to the query, and then filter
-            these documents to extract key details and information. Order the events
-            outlined in the documents chronologically, and construct a detailed timeline,
-            including a specific date for when any anticipated terrorist action may occur.
-            Make sure to include document IDs in your response."""
+        self.llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model="gpt-3.5-turbo-1106", temperature=0.5)
+        self.system_prompt = """You are a supervisor tasked with managing a conversation between the
+            following workers:  {members}. Given the following user request,
+            respond with the worker to act next. Each worker will perform a
+            task and respond with their results and status. When finished,
+            respond with FINISH. Use Retriever as a default agent to answer."""
+        self.retriever_prompt = "You answer based on database relevant to the user question."
         
         
     
@@ -110,7 +105,7 @@ class GraphModel:
 
     def create_workflow(self):
         workflow = StateGraph(AgentState)
-        retriever_path = "./dataset/faiss_index"
+        retriever_path = "./dataset/faiss_index_low"
         retriever = self.load_vector_retriever(retriever_path)
         retriever_tool = create_retriever_tool(
             retriever,
