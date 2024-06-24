@@ -36,59 +36,11 @@ low_mast_prompt = "Use the texts supplied above to answer the user's question."
 # Initialize OpenAI client and GraphModel
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-graph_model = GraphModel()
 
 
 
 # Set the title for the Streamlit app
 st.title("MASTOPIA Demo - Low Performance Low MAST")
-
-
-###########
-# Buttons #
-###########
-
-# # Define your predefined prompts
-# predefined_prompts = {
-#     "Prompt 1": "For every individual mentioned, create a profile with the most important information about them, list their relationships to other individuals, and list in which articles they appear.",
-#     "Prompt 2": "Group all articles into several topics. Provide the topics and which articles are contained in each topic",
-#     "Prompt 3": "Identify any imminent terrorist threats in the Vastopolis metropolitan area. Provide detailed information on the threat or threats (e.g. who, what, where, when, and how) so that officials can conduct counterintelligence activities. Also, provide a list of the evidential documents supporting your answer."
-# }
-
-# # Define CSS style for button size
-# button_style = """
-#     <style>
-#     .stButton button {
-#         width: 200px; /* Adjust width as needed */
-#         height: 50px; /* Adjust height as needed */
-#         font-size: 16px; /* Adjust font size as needed */
-#     }
-#     </style>
-# """
-
-# # Display CSS style
-# st.markdown(button_style, unsafe_allow_html=True)
-
-# # Create a horizontal layout for buttons
-# button_col1, button_col2, button_col3 = st.columns(3)
-
-# # Display predefined prompts in columns
-# with button_col1:
-#     if st.button("Prompt 1"):
-#         save_prompt("Prompt 1")
-
-# with button_col2:
-#     if st.button("Prompt 2"):
-#         save_prompt("Prompt 2")
-
-# with button_col3:
-#     if st.button("Prompt 3"):
-#         save_prompt("Prompt 3")
-
-###########
-
-
-
 
 
 # Initialize chat history
@@ -122,6 +74,7 @@ for message in st.session_state.messages:
 
 # Determine if a predefined prompt is selected
 
+graph_model = GraphModel()
 
 if prompt := st.chat_input("What is up?"):
     input_message = {"messages": [HumanMessage(content=prompt + low_mast_prompt)]}

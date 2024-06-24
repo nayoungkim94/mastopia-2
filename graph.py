@@ -38,7 +38,7 @@ class AgentState(TypedDict):
 
 class GraphModel:
     def __init__(self):
-        self.members = ["Searcher", "Retriever"]
+        self.members = ["Retriever"] #"Searcher", 
         self.llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model="gpt-3.5-turbo-1106", temperature=0.5)
         self.system_prompt = """You are a supervisor tasked with managing a conversation between the
             following workers:  {members}. Given the following user request,
@@ -163,7 +163,7 @@ class GraphModel:
             | JsonOutputFunctionsParser()
         )
         workflow.add_node("Retriever", retrieval_node)
-        workflow.add_node("Searcher", sql_node)        
+        # workflow.add_node("Searcher", sql_node)        
         workflow.add_node("Supervisor", supervisor_chain)
 
         conditional_map = {"FINISH" : END}
